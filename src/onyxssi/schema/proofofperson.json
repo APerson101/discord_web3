@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "name",
+    "picture",
+    "location",
+    "nationalID"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "picture": {
+      "type": "string"
+    },
+    "nationalID": {
+      "type": "string"
+    }
+  }
+}
