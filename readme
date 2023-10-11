@@ -1,5 +1,14 @@
 Hello, welcome to our project for the Digital identity hackathon.
 
-Our discord bot enables users to create accounts, digital identities and transact using different blockchains withput having to ever leave discord.
+ Our discord bot enables users to create accounts using the Onyx ssi sdk for  digital identities, users can and transact using the ripple blockchain without having to ever leave discord.
 it also has integration with other web3 social medias via lens protocol. So users can post on discord thread and view their post and comments on other platforms that incorporate lens protocol.
 
+How it works:
+
+1. Join any discord server with the bot in it.
+2. User is prompted to upload their Verifiable Presentation for validation to access hidden channels.
+3. If they don't have one, they can simply create one using the slash command. 
+4. A ripple test account is created and funded.
+5. Users can easily transact, send funds, receive funds to other users through ripple.
+
+video demo [Here](https://www.canva.com/design/DAFwtU464vM/RZFMWRU7j1itjTMwtAh4Ow/watch?utm_content=DAFwtU464vM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
