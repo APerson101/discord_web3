@@ -75,13 +75,7 @@ app.get('/sendtodiscordusername', async (req, res) => {
   await sendDM(client, "883801424482426950", 'another_user0835', 'babayemi');
 });
 axios.defaults.baseURL = 'http://localhost:3000'
-app.get('/summarize', async (req, res) => {
-  console.log("we are here to summarize");
-  const channelID = req.query.channelID;
-  const unprocessed_messages: any[] = await axios.get(`https://discord.com/api/v/10/channels/${channelID}/messages?limit=100`,
-    {headers: {Authorization: "Bot MTEzNzA1NjY2ODk1ODU4ODk3OA.GDmxUU.m-hPhu305SyUaH_nlz8GGKVoZxxWW25JP9QjYg"}});
-  res.send(unprocessed_messages);
-})
+
 
 
 
