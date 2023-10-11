@@ -32,7 +32,7 @@ export const createSignVp = async (holderKeys: string) => {
 
   const vp = createPresentation(holderDid!, [signedVcJwt], vpOptions);
 
-  writeToFile(path.resolve('vp/proofOfIdentity.json'), JSON.stringify(vp));
+  writeToFile(path.resolve('onyxssi/vp/proofOfIdentity.json'), JSON.stringify(vp));
 
   const signedVp = await jwtService.signVP(holderDidWithKeys, vp);
   writeToFile(path.join(__dirname, 'vp/proofOfIdentity.jwt'),
@@ -57,3 +57,8 @@ const privateKeyBufferFromString = (
   const buffer: Buffer = Buffer.from(privateKeyString, "hex");
   return new Uint8Array(buffer);
 };
+
+
+// create signed VC
+// send them a copy to their dm
+// give space for them to upload

@@ -3,10 +3,15 @@ import {store} from "./loaders";
 import {createDidKeyFromPrivateKey} from "./onyxssi/create_did";
 import {RippleFunctions} from "./ripple_commands";
 class FirebaseMethods {
-  static async createAccount(username: string, guildName: string) {
+  static async createAccount(username: string, guildName: string, name: string, insitution: string, instagram: string) {
     var wallet = await this.createRippleAddress();
     var walletIss = await this.createRippleAddress();
-    await createDidKeyFromPrivateKey(walletIss.privateKey.slice(2) + walletIss.publicKey.slice(2), wallet.privateKey.slice(2) + wallet.publicKey.slice(2))
+    await createDidKeyFromPrivateKey(
+      walletIss.privateKey.slice(2) + walletIss.publicKey.slice(2),
+      wallet.privateKey.slice(2) + wallet.publicKey.slice(2),
+      name, insitution, instagram
+    )
+
     // await this.saveAccount(username, wallet.seed, guildName, wallet.address);
     return {address: wallet.address, seed: wallet.seed};
   }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import {Collection, Events} from "discord.js";
-import express from "express";
+import express, {Request, Response} from "express";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import discordtoken from "../config.json";
@@ -10,7 +10,7 @@ import {connectXrpl, disconnectXrpl} from "./ripple_loader";
 const app = express();
 
 
-const client = new ClientExtender();
+export const client = new ClientExtender();
 client.commands = new Collection();
 function loadCommands() {
   const foldersPath = path.join(__dirname, 'commands');
@@ -49,6 +49,14 @@ function loadEvents() {
         if (event.name == Events.ThreadCreate) {
           event.execute(interaction);
         }
+
+        else if (event.name == Events.GuildMemberAdd) {
+          event.execute(interaction);
+        }
+
+        else if (event.name == Events.MessageCreate) {
+          event.execute(interaction);
+        }
         else if (interaction.isChatInputCommand()) {
           event.execute(interaction);
         }
@@ -56,8 +64,6 @@ function loadEvents() {
           const command = interaction.client.commands.get(interaction.commandName);
           await command.autocomplete(interaction);
         }
-
-
       });
     }
   }
@@ -73,9 +79,89 @@ app.get('/summarize', async (req, res) => {
   console.log("we are here to summarize");
   const channelID = req.query.channelID;
   const unprocessed_messages: any[] = await axios.get(`https://discord.com/api/v/10/channels/${channelID}/messages?limit=100`,
-    {headers: {Authorization: "Bot MTEzNzA1NjY2ODk1ODU4ODk3OA.GYzph3.VAYvbKcQ917GWmxryFbVBfRq9ktaCmKVPrOcAs"}});
+    {headers: {Authorization: "Bot MTEzNzA1NjY2ODk1ODU4ODk3OA.GDmxUU.m-hPhu305SyUaH_nlz8GGKVoZxxWW25JP9QjYg"}});
   res.send(unprocessed_messages);
 })
+
+
+
+// Serve static files from the 'public' directory
+app.use(express.static('onyxssi/vc'));
+
+// Define a route to handle file download
+app.get('/download/vc', (req: Request, res: Response) => {
+  const filePath = path.join(__dirname, 'onyxssi/issued_vcs.json',);
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).send('File not found');
+    }
+
+    // Set the appropriate headers for the download
+    res.setHeader('Content-Disposition', `attachment; filename=vc.json`);
+    res.setHeader('Content-Type', 'application/json')
+
+    // Create a read stream from the file and pipe it to the response
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+  });
+});
+// Define a route to handle file download
+app.get('/download/vc-signed', (req: Request, res: Response) => {
+  const filePath = path.join(__dirname, 'onyxssi/vc/proofOfIdentity.jwt',);
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).send('File not found');
+    }
+
+    // Set the appropriate headers for the download
+    res.setHeader('Content-Disposition', `attachment; filename=signed_vc.jwt`);
+    res.setHeader('Content-Type', 'application/octet-stream')
+
+    // Create a read stream from the file and pipe it to the response
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+  });
+  app.get('/download/vp', (req: Request, res: Response) => {
+    const filePath = path.join(__dirname, 'onyxssi/vp/proofOfIdentity.json',);
+
+    // Check if the file exists
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        return res.status(404).send('File not found');
+      }
+
+      // Set the appropriate headers for the download
+      res.setHeader('Content-Disposition', `attachment; filename=vp.json`);
+      res.setHeader('Content-Type', 'application/json')
+
+      // Create a read stream from the file and pipe it to the response
+      const fileStream = fs.createReadStream(filePath);
+      fileStream.pipe(res);
+    });
+  });
+  app.get('/download/vpsigned', (req: Request, res: Response) => {
+    const filePath = path.join(__dirname, 'onyxssi/vp/proofOfIdentity.jwt',);
+
+    // Check if the file exists
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        return res.status(404).send('File not found');
+      }
+
+      // Set the appropriate headers for the download
+      res.setHeader('Content-Disposition', `attachment; filename=signed_vp.jwt`);
+      res.setHeader('Content-Type', 'application/octet-stream')
+
+      // Create a read stream from the file and pipe it to the response
+      const fileStream = fs.createReadStream(filePath);
+      fileStream.pipe(res);
+    });
+  });
+});
 
 app.listen(port, () => {
   return console.log(`Express is listening at http://localhost: ${port}`);

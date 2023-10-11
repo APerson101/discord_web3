@@ -9,7 +9,7 @@ import {camelCase} from "lodash";
 import path from "path";
 import {createSignVp} from "./create_vp";
 const jwtService = new JWTService();
-export const createDidKeyFromPrivateKey = async (ISSUER_KEY: string, HOLDER_KEY: string) => {
+export const createDidKeyFromPrivateKey = async (ISSUER_KEY: string, HOLDER_KEY: string, name: string, insitution: string, instagram: string) => {
   const didKey = new KeyDIDMethod();
   const issuerDidKey: DIDWithKeys = await didKey.generateFromPrivateKey(
     privateKeyBufferFromString(ISSUER_KEY)
@@ -26,10 +26,10 @@ export const createDidKeyFromPrivateKey = async (ISSUER_KEY: string, HOLDER_KEY:
   const credentialType = "PROOF_OF_IDENTITY";
 
   const subjectData: Object = {
-    name: "Bolanle Jadesola",
+    name: name,
     picture: "test url",
-    location: "Freetown, South Africa",
-    nationalID: "012345",
+    institution: insitution,
+    instagram: instagram,
   };
 
 
@@ -65,7 +65,7 @@ export const createDidKeyFromPrivateKey = async (ISSUER_KEY: string, HOLDER_KEY:
     const jwt = await jwtService.signVC(issuerDidKey, vc);
 
     writeToFile(
-      path.resolve('vc/', `${camelCase(vc.type[1])}.jwt`),
+      path.resolve('onyxssi/vc/', `${camelCase(vc.type[1])}.jwt`),
       jwt
     );
 

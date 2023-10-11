@@ -4,20 +4,19 @@ import {
   getCredentialsFromVP,
   getSupportedResolvers,
   verifyDIDs,
-  verifyPresentationJWT,
-  verifySchema
+  verifyPresentationJWT
 } from "@jpmorganchase/onyx-ssi-sdk";
 import fs from "fs";
 
 const didKey = new KeyDIDMethod();
 const jwtService = new JWTService();
 
-const verification = async () => {
+export const verification = async (pth: string) => {
   // Instantiating the didResolver
   const didResolver = getSupportedResolvers([didKey]);
   console.log("\nReading an existing signed VP JWT\n");
   const signedVpJwt = fs.readFileSync(
-    'vp/proofOfIdentity.jwt',
+    pth,
     "utf-8"
   );
   const isVpJwtValid = await verifyPresentationJWT(
@@ -32,15 +31,13 @@ const verification = async () => {
       console.log("\nVerifying VC\n");
       const vcVerified = await verifyDIDs(vcJwt, didResolver);
       console.log(`\nVerification status: ${vcVerified}\n`);
-      if (vcVerified) {
-        const isSubjectDataValid = verifySchema(vcJwt, false);
-      }
+      return vcVerified;
     } catch (error) {
       console.log(error);
+      return false;
     }
   } else {
     console.log("Invalid VP JWT");
+    return false;
   }
 }
-
-verification();

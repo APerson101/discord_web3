@@ -3,22 +3,22 @@
   "type": "object",
   "required": [
     "name",
-    "picture",
-    "location",
-    "nationalID"
+    "institution",
+    "instagram",
+    "picture"
   ],
   "additionalProperties": false,
   "properties": {
     "name": {
       "type": "string"
     },
-    "location": {
+    "institution": {
       "type": "string"
     },
     "picture": {
       "type": "string"
     },
-    "nationalID": {
+    "instagram": {
       "type": "string"
     }
   }
